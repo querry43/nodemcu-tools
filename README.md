@@ -1,17 +1,10 @@
 network.lua
 -----------
-Persistent network configuration for access points and access point clients.
+Persistent network configuration for access points and access point clients.  This configuration always exposes an access point and optionally connects to an existing wifi network.
 
-Configuration table:
+Configuration:
 
-    NetworkConfig = {
-      mode = 'ap' -- ap or station
-      ssid = 'esp'
-      pass = nil
-      ip = '192.168.1.1'
-      netmask = '255.255.255.0'
-      gateway = nil
-    }
+    Network.ap_ssid = 'ap name'
 
 Load stored or default config:
 
@@ -19,43 +12,40 @@ Load stored or default config:
 
 Save in memory config:
 
-    Network:save()
+    Network:save({
+      ssid = 'my network',
+      pass = nil,
+      ip = '192.168.1.1',
+      netmask = '255.255.255.0',
+      gateway = nil,
+    })
 
 Reset config to defaults:
 
     Network:reset()
 
-Start network using loaded config:
-
-    Network:start()
-
-Display in memory config:
-
-    Network:display_config()
-
-Display current network status:
-
-    Network:display_status()
-
 
 webserver.lua
------------
+-------------
 Webserver with configurable routes.  These routes to callbacks can be configured at any time, even while the server is running.
 
-General configuration:
+Start the webserver:
 
-    WebServer = {
-      port = 80
-    }
+    dofile('webserver.lua')()
 
-Page callback table:
+Add a page to the page table:
 
-    WebServerPages = {
-      'request_pattern1' = function(sock, path, query_string)
-    }
+    WebServerPages['request_pattern1'] = function(sock, path, query_string)
 
-Start the server:
-    WebServer:start()
+*Sample pages*
 
-Stop the server:
-    WebServer:stop()
+ * webserver-network-config.lua - configure the network from /network
+ * webserver-status.lua - display hardware and software status from /status
+
+
+read-psv.lua and write-psv.lua
+------------------------------
+Read and write configuration data to file.
+
+    local tab = dofile('read-psv.lua')(my_file)
+    dofile('write-psv.lua')(my_file, tab)
