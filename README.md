@@ -1,3 +1,8 @@
+load-all.lua and init.lua
+-------------------------
+Load all tools.  init.lua loads load-all.lua from a timer to avoid boot issues.
+
+
 network.lua
 -----------
 Persistent network configuration for access points and access point clients.  This configuration always exposes an access point and optionally connects to an existing wifi network.
@@ -35,15 +40,16 @@ Start the webserver:
 
 Add a page to the page table:
 
-    WebServerPages['request_pattern1'] = function(sock, path, query_string)
+    WebServerPages['request_pattern1'] = function(path, query_string) return 200, 'hi there' end
 
 *Sample pages*
 
-    WebServerPages['^/network'] = dofile('webserver-network-config.lua')
+    WebServerPages['^/network'] = dofile('webserver-network.lua')
     WebServerPages['^/status'] = dofile('webserver-status.lua')
     WebServerPages['^/$'] = dofile('webserver-frame.lua')
     WebServerPages['^/menu'] = dofile('webserver-menu.lua')
 
+		
 read-psv.lua and write-psv.lua
 ------------------------------
 Read and write configuration data to file.
