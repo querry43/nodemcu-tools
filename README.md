@@ -39,9 +39,10 @@ Add a page to the page table:
 
 *Sample pages*
 
- * webserver-network-config.lua - configure the network from /network
- * webserver-status.lua - display hardware and software status from /status
-
+    WebServerPages['^/network'] = dofile('webserver-network-config.lua')
+    WebServerPages['^/status'] = dofile('webserver-status.lua')
+    WebServerPages['^/$'] = dofile('webserver-frame.lua')
+    WebServerPages['^/menu'] = dofile('webserver-menu.lua')
 
 read-psv.lua and write-psv.lua
 ------------------------------

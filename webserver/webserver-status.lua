@@ -1,4 +1,4 @@
-WebServerPages['/status'] = function (s, path, query)
+return function (s, path, query)
   local majorVer, minorVer, devVer, chipid, flashid, flashsize, flashmode, flashspeed = node.info()
   local ap_ip, ap_netmask, ap_gateway = wifi.ap.getip()
   local sta_ip, sta_netmask, sta_gateway = wifi.sta.getip()
