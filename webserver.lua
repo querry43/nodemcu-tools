@@ -36,7 +36,7 @@ return function ()
     end
 
     if is_404 then
-      s:send(status_headers['404'])
+      s:send(status_headers[404])
     end
 
     s:close()
