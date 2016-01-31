@@ -44,10 +44,10 @@ Add a page to the page table:
 
 *Sample pages*
 
-    WebServerPages['^/network'] = dofile('webserver-network.lua')
-    WebServerPages['^/status'] = dofile('webserver-status.lua')
-    WebServerPages['^/$'] = dofile('webserver-frame.lua')
-    WebServerPages['^/menu'] = dofile('webserver-menu.lua')
+    WebServerPages['^/network'] = function(path, query) return dofile('webserver-network.lua')(path, query) end
+    WebServerPages['^/status'] = function(path, query) return dofile('webserver-status.lua')(path, query) end
+    WebServerPages['^/$'] = function(path, query) return dofile('webserver-frame.lua')(path, query) end
+    WebServerPages['^/menu'] = function(path, query) return dofile('webserver-menu.lua')(path, query) end
 
 		
 read-psv.lua and write-psv.lua
