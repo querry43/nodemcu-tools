@@ -8,7 +8,7 @@ function Network:load()
   wifi.ap.config({ssid = Network.ap_ssid})
   Network.sta_ssid = ''
 
-  local config = dofile('read-psv.lua')('network.cfg')
+  local config = dofile('read-psv.lc')('network.cfg')
 
   if config.ssid then
     wifi.setmode(wifi.STATIONAP)
@@ -28,5 +28,5 @@ function Network:reset()
 end
 
 function Network:save(cfg)
-  dofile('write-psv.lua')('network.cfg', cfg)
+  dofile('write-psv.lc')('network.cfg', cfg)
 end

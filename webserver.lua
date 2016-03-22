@@ -1,42 +1,39 @@
-WebServerPages = { }
-
 return function ()
   local function process_request(s, request)
-    local request = request:match('GET%s+(%S+)')
+    local request = dofile('webserver/request.lc')(request)
     local is_404 = true
 
-    local status_headers = {}
-    status_headers[200] = 'HTTP/1.0 200 OK\r\n\r\n'
-    status_headers[404] = 'HTTP/1.0 404 Not Found\r\n\r\nPage not found'
-    status_headers[500] = 'HTTP/1.0 500 Internal Server Error\r\n\r\nInternal Server Error'
+    if request['path'] then
+      do
+        if file.open('htdocs' .. request['path']) then
+          local contents = ''
+          local line = ''
 
-    if request then
-      local query_string = request:match('?(.*)')
-      local path = request:gsub('%?.*', '')
-      local query = {}
+          repeat
+            contents = contents .. line
+            line = file.readline()
+          until line == nil
 
-      if query_string then
-        for k,v in query_string:gmatch('([^&=?]-)=([^&=?]+)') do
-          query[k] = v
+          file.close()
+
+          is_404 = false
+
+          s:send(dofile('webserver/header.lc')(200) .. contents)
         end
       end
 
-      for k, v in pairs(WebServerPages) do
-        if request:match(k) then
+      if is_404 then
+        if file.open('htdocs' .. request['path'] .. '.lc') then
+          file.close()
           is_404 = false
-          local status, response = v(path, query)
-          if status_headers[status] then
-            s:send(status_headers[status] .. response)
-          else
-            s:send(status_headers[500])
-          end
-          break
+          local status, response = dofile('htdocs' .. request['path'] .. '.lc')(request['path'], request['query'])
+          s:send(dofile('webserver/header.lc')(status) .. response)
         end
       end
     end
 
     if is_404 then
-      s:send(status_headers[404])
+      s:send(dofile('webserver/header.lc')(404))
     end
 
     s:close()

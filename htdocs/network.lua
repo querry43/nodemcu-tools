@@ -22,7 +22,7 @@ return function (path, query)
     .. '</html>'
 
   else
-    local config = dofile('read-psv.lua')('network.cfg')
+    local config = dofile('read-psv.lc')('network.cfg')
 
     return 200,
        '<html>'

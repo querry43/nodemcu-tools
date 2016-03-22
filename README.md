@@ -44,12 +44,12 @@ Add a page to the page table:
 
 *Sample pages*
 
-    WebServerPages['^/network'] = function(path, query) return dofile('webserver-network.lua')(path, query) end
-    WebServerPages['^/status'] = function(path, query) return dofile('webserver-status.lua')(path, query) end
-    WebServerPages['^/$'] = function(path, query) return dofile('webserver-frame.lua')(path, query) end
-    WebServerPages['^/menu'] = function(path, query) return dofile('webserver-menu.lua')(path, query) end
+    WebServerPages['^/network'] = function(path, query) return dofile('htdocs/network.lua')(path, query) end
+    WebServerPages['^/status'] = function(path, query) return dofile('htdocs/status.lua')(path, query) end
+    WebServerPages['^/$'] = function(path, query) return dofile('htdocs/frame.lua')(path, query) end
+    WebServerPages['^/menu'] = function(path, query) return dofile('htdocs/menu.lua')(path, query) end
 		
-The frame page loads /menu in an upper frame and an empty page in a lower frame.  Change the default lower frame path by setting content_path prior to loading the module.
+The frame page loads /menu in an upper frame and an empty page in a lower frame.  Change the default lower frame path by setting default_content_path prior to loading the module.
 
 		
 read-psv.lua and write-psv.lua

@@ -1,10 +1,17 @@
+export NODEMCU_UPLOADER ?= nodemcu-uploader
+export PORT ?= 
+export SPEED ?= 
+
 all:
 
 terminal:
-	nodemcu-uploader terminal
+	$(NODEMCU_UPLOADER) $(SPEED) $(PORT) terminal
+
+restart:
+	$(NODEMCU_UPLOADER) $(SPEED) $(PORT) node restart
 
 upload:
-	nodemcu-uploader upload *.lua
-	cd webserver && nodemcu-uploader upload *.lua
+	$(NODEMCU_UPLOADER) $(SPEED) $(PORT) upload --compile *.lua webserver/*.lua htdocs/*.lua
+	$(NODEMCU_UPLOADER) $(SPEED) $(PORT) upload htdocs/*.html
 
-.PHONY: all terminal upload
+.PHONY: all terminal restart upload
