@@ -1,39 +1,20 @@
 return function ()
   local function process_request(s, request)
     local request = dofile('webserver/request.lc')(request)
-    local is_404 = true
 
     if request['path'] then
-      do
-        if file.open('htdocs' .. request['path']) then
-          local contents = ''
-          local line = ''
-
-          repeat
-            contents = contents .. line
-            line = file.readline()
-          until line == nil
-
-          file.close()
-
-          is_404 = false
-
-          s:send(dofile('webserver/header.lc')(200) .. contents)
-        end
+      if dofile('file/exists.lc')('htdocs' .. request['path']) then
+        dofile('webserver/serve-file.lc')(s, 'htdocs' .. request['path'], false)
+      elseif dofile('file/exists.lc')('htdocs' .. request['path'] .. '.gz') then
+        dofile('webserver/serve-file.lc')(s, 'htdocs' .. request['path'] .. '.gz', true)
+      elseif dofile('file/exists.lc')('htdocs' .. request['path'] .. '.lc') then
+        local status, response = dofile('htdocs' .. request['path'] .. '.lc')(request['path'], request['query'])
+        s:send(dofile('webserver/header.lc')(status, false) .. response)
+      else
+        s:send(dofile('webserver/header.lc')(404, false))
       end
-
-      if is_404 then
-        if file.open('htdocs' .. request['path'] .. '.lc') then
-          file.close()
-          is_404 = false
-          local status, response = dofile('htdocs' .. request['path'] .. '.lc')(request['path'], request['query'])
-          s:send(dofile('webserver/header.lc')(status) .. response)
-        end
-      end
-    end
-
-    if is_404 then
-      s:send(dofile('webserver/header.lc')(404))
+    else
+      s:send(dofile('webserver/header.lc')(400, false))
     end
 
     s:close()

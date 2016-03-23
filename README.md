@@ -32,29 +32,35 @@ Reset config to defaults:
 
 webserver.lua
 -------------
-Webserver with configurable routes.  These routes to callbacks can be configured at any time, even while the server is running.
+Webserver capable of serving static and dynamic files from the htdocs/ directory.
 
 Start the webserver:
 
     dofile('webserver.lua')()
 
-Add a page to the page table:
-
-    WebServerPages['request_pattern1'] = function(path, query_string) return 200, 'hi there' end
-
 *Sample pages*
 
-    WebServerPages['^/network'] = function(path, query) return dofile('htdocs/network.lua')(path, query) end
-    WebServerPages['^/status'] = function(path, query) return dofile('htdocs/status.lua')(path, query) end
-    WebServerPages['^/$'] = function(path, query) return dofile('htdocs/frame.lua')(path, query) end
-    WebServerPages['^/menu'] = function(path, query) return dofile('htdocs/menu.lua')(path, query) end
+There are a number of sample pages in htdocs/ including basic network config and menu support as well as stress tests.
 		
-The frame page loads /menu in an upper frame and an empty page in a lower frame.  Change the default lower frame path by setting default_content_path prior to loading the module.
+The frame.lua page loads /menu.html in an upper frame and an empty page in a lower frame.  Change the default lower frame path by setting default_content_path.
+
+*Performance*
+
+ - 1.15 static pages / second
+ - 0.83 compressed static pages / second
+ - 0.83 dynamic pages / second
+
+
+file/exists.lua
+------------------------------
+Return true if a file exists.
+
+    local exists = dofile('file/exists.lua')(my_file)
 
 		
-read-psv.lua and write-psv.lua
+file/read-psv.lua and file/write-psv.lua
 ------------------------------
 Read and write configuration data to file.
 
-    local tab = dofile('read-psv.lua')(my_file)
-    dofile('write-psv.lua')(my_file, tab)
+    local tab = dofile('file/read-psv.lua')(my_file)
+    dofile('file/write-psv.lua')(my_file, tab)
