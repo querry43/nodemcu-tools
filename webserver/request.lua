@@ -1,4 +1,5 @@
 return function (request)
+  print('BEGIN:request.lc:' .. tmr.now())
   local components = {}
 
   local get = request:match('GET%s+(%S+)')
@@ -10,6 +11,7 @@ return function (request)
     components['path'] = get:gsub('%?.*', '')
     if components['path'] == '/' then components['path'] = '/index.html' end
 
+    print('parsing query params:' .. tmr.now())
     components['query'] = {}
 
     if query_string then
@@ -18,6 +20,8 @@ return function (request)
       end
     end
   end
+
+  print('END:request.lc:' .. tmr.now())
 
   return components
 end
