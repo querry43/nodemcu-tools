@@ -1,0 +1,8 @@
+s = net.createServer(net.TCP, 10)
+s:listen(80, function(c)
+  c:on("receive", function (c, pl)
+    c:send("OK")
+    c:close()
+    collectgarbage()
+  end)
+end)
