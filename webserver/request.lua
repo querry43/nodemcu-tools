@@ -17,6 +17,22 @@ return function (request)
         components['query'][k] = v
       end
     end
+
+    if components['path'] then
+      if file.open('htdocs' .. components['path']) then
+        components['file'] = 'htdocs' .. components['path']
+        components['gz'] = false
+        file.close()
+      elseif file.open('htdocs' .. components['path'] .. '.gz') then
+        components['file'] = 'htdocs' .. components['path'] .. '.gz'
+        components['gz'] = true
+        file.close()
+      elseif file.open('htdocs' .. components['path'] .. '.lc') then
+        components['function'] = dofile('htdocs' .. components['path'] .. '.lc')
+        file.close()
+      end
+    end
+
   end
 
   return components

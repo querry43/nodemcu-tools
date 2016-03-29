@@ -46,9 +46,21 @@ The frame.lua page loads /menu.html in an upper frame and an empty page in a low
 
 *Performance*
 
- - 1.15 static pages / second
- - 0.83 compressed static pages / second
- - 0.83 dynamic pages / second
+It is possible to increase performance at the cost of ~ 4k of memory with this setting prior to loading the server:
+
+    inline_functions = true
+
+With inlined functions:
+
+ - 20 static pages / second
+ - 3.3 compressed static pages / second
+ - 1.6 dynamic pages / second
+
+Without inlined functions:
+
+ - 1.5 static pages / second
+ - 1.1 compressed static pages / second
+ - 1.1 dynamic pages / second
 
 
 file/exists.lua
