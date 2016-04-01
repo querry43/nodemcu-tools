@@ -52,8 +52,8 @@ It is possible to increase performance at the cost of ~ 4k of memory with this s
 
 With inlined functions:
 
- - 27 dynamic pages / second
- - 3 static pages / second
+ - 16 dynamic pages / second
+ - 2 static pages / second
  - 1 compressed static pages / second
 
 Without inlined functions:

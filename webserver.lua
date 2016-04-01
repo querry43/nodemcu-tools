@@ -9,25 +9,40 @@ else
 end
 
 return function ()
-  local function process_request(s, request)
+  local function handle_receive(s, request, session)
     local request = parse_request(request)
 
     if request['file'] then
-      serve_file(s, request['file'], request['gz'])
+      session['file'] = request['file']
+      session['pos'] = 0
+      session['gz'] = request['gz']
+      serve_file(s, session)
     elseif request['function'] then
       local status, response = request['function'](request['path'], request['query'])
       s:send(header(status, false) .. response)
+      s:close()
     else
       s:send(header(404, false))
+      s:close()
     end
 
-    s:close()
+    collectgarbage()
+  end
+
+  local function handle_sent(s, request, session)
+    if session['file'] then
+      serve_file(s, session, false)
+    else
+      s:close()
+    end
 
     collectgarbage()
   end
 
   local s = net.createServer(net.TCP, 10)
   s:listen(80, function(sock)
-    sock:on("receive", process_request)
+    local session = {}
+    sock:on('receive', function(s, request) handle_receive(s, request, session) end)
+    sock:on('sent', function(s, request) handle_sent(s, request, session) end)
   end)
 end
