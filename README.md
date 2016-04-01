@@ -52,15 +52,15 @@ It is possible to increase performance at the cost of ~ 4k of memory with this s
 
 With inlined functions:
 
- - 20 static pages / second
- - 3.3 compressed static pages / second
- - 1.6 dynamic pages / second
+ - 27 dynamic pages / second
+ - 3 static pages / second
+ - 1 compressed static pages / second
 
 Without inlined functions:
 
- - 1.5 static pages / second
- - 1.1 compressed static pages / second
- - 1.1 dynamic pages / second
+ - 1 static pages / second
+ - 1 compressed static pages / second
+ - 1 dynamic pages / second
 
 
 file/exists.lua
